@@ -1,0 +1,11 @@
+{
+  "geode": "5.11.2",
+  "gd": {
+    "ios": "2.2081"
+  },
+  "id": "ultimatemjl.input-buffer",
+  "name": "Input Buffer",
+  "version": "v0.1.0",
+  "developer": "Ultimatemjl",
+  "description": "An adjustable jump input buffer for Geometry Dash."
+}
