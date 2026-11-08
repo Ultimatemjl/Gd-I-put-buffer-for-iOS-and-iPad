@@ -6,6 +6,11 @@ on:
     branches:
       - main
 
+# Avoid wasting runners on intermediate commits while several files are being added.
+concurrency:
+  group: ios-geode-build-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -22,7 +27,7 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           target: iOS
-          sdk: latest
+          sdk: given
           build-config: Release
 
       - name: Upload iOS Geode artifact
