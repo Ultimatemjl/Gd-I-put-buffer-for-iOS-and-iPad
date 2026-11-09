@@ -12,6 +12,12 @@ project(InputBuffer VERSION 0.1.0)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
+# Geode's iOS loader looks for the binary using the mod ID, not the CMake
+# project name. Ensure the packaged dylib is named accordingly.
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME "ultimatemjl.input-buffer"
+)
+
 if (NOT DEFINED ENV{GEODE_SDK})
     message(FATAL_ERROR "Unable to find Geode SDK. Define GEODE_SDK.")
 endif()
