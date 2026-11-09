@@ -19,8 +19,12 @@ endif()
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 setup_geode_mod(${PROJECT_NAME})
 
-# The generated iOS bindings use FMOD types without including their declarations.
-# Apply this only to our mod target, not to Geode's third-party dependencies.
+# The iOS-generated bindings refer to FMOD types without including their declarations.
+# Force-include the SDK's bundled FMOD header for the bindings target only.
 if (CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    target_compile_options(${PROJECT_NAME} PRIVATE "SHELL:-include Geode/fmod/fmod.hpp")
+    if (TARGET GeodeBindings)
+        target_compile_options(GeodeBindings PRIVATE
+            "SHELL:-include $ENV{GEODE_SDK}/loader/include/Geode/fmod/fmod.hpp"
+        )
+    endif()
 endif()
