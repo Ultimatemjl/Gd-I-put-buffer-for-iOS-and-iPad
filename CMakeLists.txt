@@ -5,6 +5,9 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "iOS")
     set(CMAKE_OSX_ARCHITECTURES arm64)
+    # Geode 5.11.2's prebuilt iOS Codegen emits FMOD types without including
+    # their declarations. Force-include the SDK's FMOD C++ header for iOS.
+    add_compile_options("SHELL:-include Geode/fmod/fmod.hpp")
 endif()
 
 project(InputBuffer VERSION 0.1.0)
