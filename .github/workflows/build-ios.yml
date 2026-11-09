@@ -28,6 +28,8 @@ jobs:
         with:
           target: iOS
           sdk: given
+          bindings: geode-sdk/bindings
+          bindings-ref: c0c808828d456e54164b60a589b0edd6172b327a
           build-config: Release
 
       - name: Upload iOS Geode artifact
