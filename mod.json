@@ -7,5 +7,5 @@
   "name": "Input Buffer",
   "version": "v0.1.0",
   "developer": "Ultimatemjl",
-  "description": "An adjustable jump input buffer for Geometry Dash."
+  "description": "A 4-frame early jump input buffer for Geometry Dash."
 }
