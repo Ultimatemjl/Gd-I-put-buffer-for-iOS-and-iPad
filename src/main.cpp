@@ -3,8 +3,8 @@
 
 using namespace geode::prelude;
 
-// 800 ms at Geometry Dash's normal 240 physics steps per second.
-static constexpr int BUFFER_DURATION_STEPS = 192;
+// Forgive an early jump input by up to 4 Geometry Dash physics frames.
+static constexpr int BUFFER_DURATION_STEPS = 4;
 
 struct InputBufferState {
     int step = 0;
@@ -154,5 +154,5 @@ class $modify(InputBufferLayer, GJBaseGameLayer) {
 };
 
 $on_mod(Loaded) {
-    log::info("Input Buffer loaded (800 ms jump buffer).");
+    log::info("Input Buffer loaded (4-frame early jump buffer).");
 }
