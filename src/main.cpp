@@ -156,3 +156,58 @@ class $modify(InputBufferLayer, GJBaseGameLayer) {
 $on_mod(Loaded) {
     log::info("Input Buffer loaded (4-frame early jump buffer).");
 }
+
+
+#include <Geode/modify/PauseLayer.hpp>
+
+// Pause-menu selector for predictive-input correction strength.
+// Stage 5 disables correction. The selected stage is saved across launches.
+class $modify(InputBufferPauseLayer, PauseLayer) {
+    void onInputCorrectionStage(CCObject* sender) {
+        auto item = static_cast<CCMenuItem*>(sender);
+        int stage = item->getTag();
+        if (stage < 1 || stage > 5) return;
+
+        Mod::get()->setSavedValue<int>("correction-stage", stage);
+        log::info("Input correction stage selected: {}", stage);
+    }
+
+    void customSetup() {
+        PauseLayer::customSetup();
+
+        auto winSize = CCDirector::get()->getWinSize();
+        auto menu = CCMenu::create();
+        if (!menu) return;
+
+        // Position the vertical stack in the right-hand area of the pause menu.
+        menu->setPosition(ccp(winSize.width - 58.f, winSize.height * 0.50f));
+        menu->setContentSize(CCSizeZero);
+
+        int selected = Mod::get()->getSavedValue<int>("correction-stage", 5);
+        for (int stage = 1; stage <= 5; ++stage) {
+            auto label = CCLabelBMFont::create(std::to_string(stage).c_str(), "bigFont.fnt");
+            if (!label) continue;
+
+            auto button = CCMenuItemSpriteExtra::create(
+                label, this, menu_selector(InputBufferPauseLayer::onInputCorrectionStage)
+            );
+            if (!button) continue;
+
+            button->setTag(stage);
+            button->setScale(0.62f);
+            button->setPosition(ccp(0.f, 80.f - (stage - 1) * 40.f));
+
+            // Highlight the currently selected stage.
+            if (stage == selected) {
+                auto outline = CCSprite::createWithSpriteFrameName("GJ_button_01.png");
+                if (outline) {
+                    outline->setScale(0.75f);
+                    button->addChild(outline, -1);
+                }
+            }
+            menu->addChild(button);
+        }
+
+        this->addChild(menu, 500);
+    }
+};
